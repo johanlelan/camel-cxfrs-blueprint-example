@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+	xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0"
+	default-activation="lazy" xmlns:jaxws="http://cxf.apache.org/blueprint/jaxws"
+	xmlns:cxf="http://cxf.apache.org/blueprint/core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:camelcxf="http://camel.apache.org/schema/blueprint/cxf"
+	xmlns:camel="http://camel.apache.org/schema/blueprint"
+	xsi:schemaLocation="
+             http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+             http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0 http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.1.0.xsd
+             http://camel.apache.org/schema/blueprint/cxf http://camel.apache.org/schema/blueprint/cxf/camel-cxf.xsd
+             http://cxf.apache.org/blueprint/jaxws http://cxf.apache.org/schemas/blueprint/jaxws.xsd
+             http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd
+             http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd">
+	<!-- OSGI blueprint property placeholder -->
+    <cm:property-placeholder id="blueprint.placeholder"
+        persistent-id="cxf.blueprint" update-strategy="reload">
+        <!-- list some properties for this test -->
+        <cm:default-properties>
+            <cm:property name="cxf.application.in" value="cxfrs:bean:rest.endpoint?throwExceptionOnFailure=false&amp;bindingStyle=SimpleConsumer&amp;loggingFeatureEnabled=true"/>
+            <cm:property name="common.tenant.in" value="direct-vm:common.tenant.in"/>
+            <cm:property name="common.authentication.in" value="direct-vm:common.authentication.in"/>
+            <cm:property name="application.put.in" value="direct-vm:application.put"/>
+            <cm:property name="applications.post.in" value="direct-vm:applications.post"/>
+            <cm:property name="user.authentication.in" value="mock:user.authentication.in"/>
+            <cm:property name="user.identication.in" value="mock:user.identication.in"/>
+            <cm:property name="log.trace.level" value="INFO"/>
+        </cm:default-properties>
+    </cm:property-placeholder>
+    <service id="test" ref="rest.endpoint" auto-export="interfaces"/>
+    <!-- context camel -->
+	<camel:camelContext id="cxf.example" trace="true" autoStartup="true" useBlueprintPropertyResolver="true">
+		<camel:routeContextRef ref="common-tenant"/>
+		<camel:routeContextRef ref="common-authentication"/>
+		<camel:routeContextRef ref="cxf-put"/>
+		<camel:routeContextRef ref="cxf-post"/>
+		<camel:route id="application.exposition.rest">
+			<camel:from
+				uri="{{cxf.application.in}}"/>
+			<camel:doTry>
+				<camel:removeHeaders pattern="*"
+					excludePattern="CamelAcceptContentType|CamelHttpMethod|CamelHttpPath|CamelHttpUri|CamelHttpCharacterEncoding|Accept-Language|operationName|tenant|Authorization|id|MGDIS_debug"/>
+				<camel:to uri="{{common.tenant.in}}"/>
+				<camel:choice>
+					<camel:when>
+						<camel:header>Authorization</camel:header>
+						<camel:to uri="{{common.authentication.in}}"/>
+					</camel:when>
+				</camel:choice>
+				<camel:recipientList>
+					<camel:simple>direct-vm:${header.operationName.replaceAll('_','.')}</camel:simple>
+				</camel:recipientList>
+				<camel:doFinally>
+					<camel:process ref="httpResponse"/>
+					<camel:removeHeaders pattern="*"/>
+				</camel:doFinally>
+			</camel:doTry>
+		</camel:route>
+	</camel:camelContext>
+</blueprint>

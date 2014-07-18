@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="toHTMl.xsl"?>
+<application xmlns="http://wadl.dev.java.net/2009/02" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="
+  http://wadl.dev.java.net/2009/02 http://www.w3.org/Submission/wadl/wadl.xsd
+  http://www.w3.org/2001/XMLSchema http://www.w3.org/2001/XMLSchema.xsd">
+ <resources base="http://localhost:8080/exposition">
+  <resource path="{tenant}">
+   <param name="tenant" style="template" type="xs:string"/>
+   <resource path="/applications">
+    <method name="OPTIONS" id="applications_options">
+     <request>
+      <param name="Authorization" style="header" type="xs:string"/>
+     </request>
+     <response status="200">
+      <representation mediaType="application/json">
+       <param name="Allow" style="header" type="xs:string" required="true"/>
+      </representation>
+     </response>
+    </method>
+    <method name="GET" id="applications_find">
+     <request>
+      <param name="Authorization" style="header" type="xs:string"/>
+      <param name="inlinecount" style="query" type="xs:string" default="none">
+       <doc title="Count of all elements" xml:lang="EN">Specifies that the response to the request
+        includes a count of the number of Entries in the Collection of Entries</doc>
+       <option value="allpages">
+        <doc xml:lang="EN">Response includes a count of the number of entities in the
+         collection</doc>
+       </option>
+       <option value="none">
+        <doc xml:lang="EN">Response does not include a count in the response.</doc>
+       </option>
+      </param>
+      <param name="top" style="query" type="xs:positiveInteger">
+       <doc title="Limit the maximum number of result entries" xml:lang="EN">Selecting only the
+        first N items of the set</doc>
+      </param>
+      <param name="skip" style="query" type="xs:positiveInteger">
+       <doc title="Skip a number of elements" xml:lang="EN"> That subset is defined by seeking N
+        Entries into the Collection and selecting only the remaining Entries (starting with Entry
+        N+1)</doc>
+      </param>
+      <param name="filter" style="query" type="xs:string" default="status eq 'DEMANDE'">
+       <doc title="Filter all elements with predicates" xml:lang="EN">See ODATA URI Conventions for
+        more details on filter capabilities
+        http://www.odata.org/documentation/odata-version-2-0/uri-conventions</doc>
+      </param>
+      <param name="orderby" style="query" type="xs:string">
+       <doc title="Sort entries with at least one property" xml:lang="EN">Use to order the
+        collection of Entries </doc>
+       <doc xml:lang="EN">Example myProperty asc, mySecondProperty desc</doc>
+      </param>
+      <param name="skiptoken" style="query" type="xs:string">
+       <doc title="To specified the last received entry" xml:lang="EN">For paginating purpose, send
+        the last received entry to get the N following entries</doc>
+      </param>
+      <param name="select" style="query" type="xs:string">
+       <doc title="Properties selection" xml:lang="EN">Specifies that a response should return a
+        subset of the entity's properties</doc>
+      </param>
+      <param name="fulltext" style="query" type="xs:string">
+       <doc title="Search in all fields" xml:lang="EN">Specifies that a response should return every
+        entity where fulltext value appears</doc>
+      </param>
+     </request>
+     <response status="200">
+      <doc title="OK" xml:lang="EN">Should return a list of elements event if it is empty</doc>
+      <representation mediaType="application/json">
+       <doc xml:lang="EN">Should return a list of elements that respect predicates</doc>
+      </representation>
+     </response>
+     <response status="400">
+      <doc title="Bad Request" xml:lang="EN">When one of the parameter is malformed</doc>
+     </response>
+     <response status="401">
+      <doc title="Unautorized" xml:lang="EN">When credentials have not been specified</doc>
+     </response>
+     <response status="403">
+      <doc title="Forbidden" xml:lang="EN">When authenticated user have not enough rights to modify
+       user's details</doc>
+     </response>
+     <response status="501">
+      <doc title="Not Implemented" xml:lang="EN">When this functionnality is not implemented</doc>
+     </response>
+    </method>
+    <method name="POST" id="applications_post">
+     <request>
+      <representation mediaType="application/json">
+       <doc xml:lang="EN">Should take a t:application json object without identifier</doc>
+       <param name="Authorization" style="header" type="xs:string" required="true">
+        <doc xml:lang="EN">Must specified Authorization header (RFC 2616)</doc>
+       </param>
+       <param name="forced" style="query" type="xs:boolean" required="true">
+        <doc xml:lang="EN">Used when a first call returned 409 conflict, in order to force
+         creation</doc>
+       </param>
+       <param name="payload" style="plain" type="xs:string" id="newEntity"/>
+      </representation>
+     </request>
+     <response status="201">
+      <representation mediaType="application/json"> </representation>
+     </response>
+     <response status="401">
+      <doc title="Unautorized" xml:lang="EN">When credentials have not been specified</doc>
+     </response>
+     <response status="403">
+      <doc title="Forbidden" xml:lang="EN">When authenticated user have not enough rights to modify
+       user's details</doc>
+     </response>
+     <response status="406">
+      <representation mediaType="application/json"> </representation>
+     </response>
+     <response status="409">
+      <representation mediaType="application/json"> </representation>
+     </response>
+    </method>
+    <resource path="{id}">
+     <param name="id" style="template" type="xs:string"/>
+     <method name="OPTIONS" id="application_options">
+      <request>
+       <param name="Authorization" style="header" type="xs:string"/>
+      </request>
+      <response status="200">
+       <representation mediaType="application/json">
+        <param name="Allow" style="header" type="xs:string" required="true"/>
+       </representation>
+      </response>
+     </method>
+     <method name="HEAD" id="application_head">
+      <request>
+       <param name="Authorization" style="header" type="xs:string" required="true">
+        <doc xml:lang="EN">Must specified Authorization header (RFC 2616)</doc>
+       </param>
+      </request>
+      <response status="200">
+       <representation mediaType="application/json"/>
+      </response>
+      <response status="401">
+       <doc title="Unautorized" xml:lang="EN">When credentials have not been specified</doc>
+      </response>
+      <response status="403">
+       <doc title="Forbidden" xml:lang="EN">When authenticated user have not enough rights to modify
+        user's details</doc>
+      </response>
+      <response status="404">
+       <doc title="Not Found" xml:lang="FR">Quand le application n'existe pas</doc>
+      </response>
+      <response status="501">
+       <doc title="Not Implemented" xml:lang="EN">When this functionnality is not implemented</doc>
+      </response>
+     </method>
+     <method name="PUT" id="application_put">
+      <request>
+       <representation mediaType="application/json">
+        <doc xml:lang="EN">Should take a t:application json object with id field</doc>
+        <param name="Authorization" style="header" type="xs:string" required="true">
+         <doc xml:lang="EN">Must specified Authorization header (RFC 2616)</doc>
+        </param>
+        <param name="payload" style="plain" type="xs:string" id="modifyEntity"/>
+       </representation>
+      </request>
+      <response status="201">
+       <representation mediaType="application/json"> </representation>
+      </response>
+      <response status="200">
+       <representation mediaType="application/json"> </representation>
+      </response>
+      <response status="401">
+       <doc title="Unautorized" xml:lang="EN">When credentials have not been specified</doc>
+      </response>
+      <response status="403">
+       <doc title="Forbidden" xml:lang="EN">When authenticated user have not enough rights to modify
+        user's details</doc>
+      </response>
+      <response status="406">
+       <doc title="Not Acceptable" xml:lang="FR">Quand des règles méapplication sont violées</doc>
+       <representation mediaType="application/json">
+        <doc xml:lang="FR">Description des erreurs</doc>
+       </representation>
+      </response>
+      <response status="409">
+       <doc title="Conflict" xml:lang="FR">Quand le application entre en conflit avec un application
+        existant, retourne une liste de application similaires t:Similaire.</doc>
+       <representation mediaType="application/json">
+        <doc xml:lang="FR">Description des erreurs</doc>
+       </representation>
+      </response>
+     </method>
+     <method name="GET" id="application_get">
+      <request>
+       <param name="Authorization" style="header" type="xs:string" required="true">
+        <doc xml:lang="EN">Must specified Authorization header (RFC 2616)</doc>
+       </param>
+      </request>
+      <response status="200">
+       <representation mediaType="application/json"/>
+      </response>
+      <response status="401">
+       <doc title="Unautorized" xml:lang="EN">When credentials have not been specified</doc>
+      </response>
+      <response status="403">
+       <doc title="Forbidden" xml:lang="EN">When authenticated user have not enough rights to modify
+        user's details</doc>
+      </response>
+      <response status="404">
+       <doc title="Not Found" xml:lang="FR">Quand le application n'existe pas</doc>
+      </response>
+      <response status="501">
+       <doc title="Not Implemented" xml:lang="EN">When this functionnality is not implemented</doc>
+      </response>
+     </method>
+     <method name="DELETE" id="application_delete">
+      <request>
+       <param name="Authorization" style="header" type="xs:string" required="true">
+        <doc xml:lang="EN">Must specified Authorization header (RFC 2616)</doc>
+       </param>
+      </request>
+      <response status="204">
+       <doc title="No Content" xml:lang="EN">Quand la suppression est effective</doc>
+      </response>
+      <response status="401">
+       <doc title="Unautorized" xml:lang="EN">When credentials have not been specified</doc>
+      </response>
+      <response status="403">
+       <doc title="Forbidden" xml:lang="EN">When authenticated user have not enough rights to modify
+        user's details</doc>
+      </response>
+      <response status="404">
+       <doc xml:lang="EN">Quand le application n'existe pas</doc>
+      </response>
+      <response status="501">
+       <doc title="Not Implemented" xml:lang="EN">When this functionnality is not implemented</doc>
+      </response>
+     </method>
+    </resource>
+   </resource>
+  </resource>
+ </resources>
+</application>
