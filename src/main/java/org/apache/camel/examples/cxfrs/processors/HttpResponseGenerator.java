@@ -1,4 +1,4 @@
-package cxf.blueprint;
+package org.apache.camel.examples.cxfrs.processors;
 
 import java.net.URI;
 import java.util.Date;

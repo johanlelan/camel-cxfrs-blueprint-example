@@ -1,4 +1,4 @@
-package http.methods;
+package org.apache.camel.examples.cxfrs.http.methods;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -9,6 +9,6 @@ import javax.ws.rs.HttpMethod;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-@HttpMethod("LINK")
-public @interface LINK {
+@HttpMethod("PATCH")
+public @interface PATCH {
 }

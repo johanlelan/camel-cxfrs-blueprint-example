@@ -1,4 +1,4 @@
-package http.methods;
+package org.apache.camel.examples.cxfrs.http.methods;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
