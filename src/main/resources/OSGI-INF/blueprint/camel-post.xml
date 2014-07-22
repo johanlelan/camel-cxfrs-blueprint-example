@@ -14,8 +14,8 @@
              http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd">
 	<camel:routeContext id="cxf-post"
 		xmlns="http://camel.apache.org/schema/spring">
-		<camel:route id="applications.post">
-			<camel:from uri="{{applications.post.in}}"/>
+		<camel:route id="application.post">
+			<camel:from uri="{{application.post.in}}"/>
 			<camel:setHeader headerName="CamelHttpResponseCode">
 				<camel:constant>201</camel:constant>
 			</camel:setHeader>

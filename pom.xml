@@ -3,25 +3,26 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.apache.camel.examples</groupId>
-	<artifactId>camel-example-cxf-blueprint</artifactId>
+	<artifactId>cxfrs-blueprint</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>bundle</packaging>
 	<name>CXFRS Example Blueprint Bundle</name>
 	<description>CXFRS OSGi blueprint bundle sample project.</description>
 	<properties>
-		<camel.version>2.12.3</camel.version>
+		<camel.version>2.13.2</camel.version>
 		<activemq.version>5.9.0</activemq.version>
 		<cxf.version>2.7.11</cxf.version>
 		<sl4j.version>1.7.7</sl4j.version>
 		<log4j.version>1.2.17</log4j.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<maven-bundle-plugin.version>2.4.0</maven-bundle-plugin.version>
 	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.ow2.asm</groupId>
 			<artifactId>asm-all</artifactId>
-			<version>5.0.3</version>
+			<version>4.1</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -36,11 +37,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.camel</groupId>
-			<artifactId>camel-cxf</artifactId>
-			<version>${camel.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-jms</artifactId>
 			<version>${camel.version}</version>
 		</dependency>
@@ -49,37 +45,31 @@
 			<artifactId>activemq-pool</artifactId>
 			<version>${activemq.version}</version>
 		</dependency>
-		<!-- testing -->
 		<dependency>
 			<groupId>org.apache.camel</groupId>
-			<artifactId>camel-test-blueprint</artifactId>
+			<artifactId>camel-cxf</artifactId>
 			<version>${camel.version}</version>
-			<scope>test</scope>
 		</dependency>
 		<!-- logging -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>${sl4j.version}</version>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>${sl4j.version}</version>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>jcl-over-slf4j</artifactId>
 			<version>${sl4j.version}</version>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>${log4j.version}</version>
-			<scope>test</scope>
 		</dependency>
 		<!-- OSGI logService compendium -->
 		<dependency>
@@ -88,9 +78,40 @@
 			<version>5.0.0</version>
 			<scope>test</scope>
 		</dependency>
+		<!-- testing -->
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-transports-http-jetty</artifactId>
+			<version>${cxf.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-test-blueprint</artifactId>
+			<version>${camel.version}</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 	<build>
+		<defaultGoal>install</defaultGoal>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.5.1</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
 			<!-- wadl first -->
 			<plugin>
 				<groupId>org.apache.cxf</groupId>
@@ -105,7 +126,7 @@
 							<wadlOptions>
 								<wadlOption>
 									<wadl>${basedir}/src/main/resources/service/application/application.wadl</wadl>
-									<packagename>org.apache.camel.examples.cxf.jaxrs.codegen.service</packagename>
+									<packagename>org.apache.camel.examples.cxfrs.codegen.service</packagename>
 									<extraargs>
 										<extraarg>-impl</extraarg>
 										<extraarg>-verbose</extraarg>
@@ -122,15 +143,24 @@
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
-				<version>2.4.0</version>
+				<version>${maven-bundle-plugin.version}</version>
 				<extensions>true</extensions>
 				<configuration>
 					<instructions>
 						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-						<Bundle-Version>${project.version}</Bundle-Version>
-						<Export-Package>org.apache.camel.examples.*;version=${project.version}</Export-Package>
+						<Private-Package>org.apache.camel.examples.*</Private-Package>
+						<!-- <Export-Package>org.apache.camel.examples.*;version=${project.version}</Export-Package> -->
 						<Import-Package>*</Import-Package>
 					</instructions>
+				</configuration>
+			</plugin>
+			<!-- to run the example using mvn camel:run -->
+			<plugin>
+				<groupId>org.apache.camel</groupId>
+				<artifactId>camel-maven-plugin</artifactId>
+				<version>${camel.version}</version>
+				<configuration>
+					<useBlueprint>true</useBlueprint>
 				</configuration>
 			</plugin>
 		</plugins>

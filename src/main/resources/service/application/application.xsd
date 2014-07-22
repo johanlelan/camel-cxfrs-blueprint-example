@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+ xmlns:tns="http://org.apache.camel/examples/cxfrs/applications"
+ targetNamespace="http://org.apache.camel/examples/cxfrs/applications"
+ elementFormDefault="qualified">
+ <xs:element name="application" type="tns:ApplicationType"/>
+ <xs:complexType name="ApplicationType">
+  <xs:sequence>
+   <xs:element name="id" type="xs:anyURI"/>
+   <xs:element name="title" type="xs:string"/>
+   <xs:element name="summary" type="xs:string" minOccurs="0"/>
+   <xs:element name="url" type="xs:anyURI" minOccurs="0"/>
+   <xs:element name="content" type="xs:string" minOccurs="0"/>
+   <xs:element name="author" type="xs:string" minOccurs="0"/>
+   <xs:element name="sources" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded"/>
+   <xs:element name="categories" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded"/>
+   <xs:element name="operatingSystems" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+   <xs:element name="thumbnail" type="xs:string" minOccurs="0"/>
+   <xs:element name="annotation" type="xs:string"/>
+  </xs:sequence>
+ </xs:complexType>
+</xs:schema>

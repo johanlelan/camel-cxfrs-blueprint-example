@@ -20,18 +20,14 @@
             <cm:property name="cxf.application.in" value="cxfrs:bean:rest.endpoint?throwExceptionOnFailure=false&amp;bindingStyle=SimpleConsumer&amp;loggingFeatureEnabled=true"/>
             <cm:property name="common.tenant.in" value="direct-vm:common.tenant.in"/>
             <cm:property name="common.authentication.in" value="direct-vm:common.authentication.in"/>
-            <cm:property name="application.put.in" value="direct-vm:application.put"/>
-            <cm:property name="applications.post.in" value="direct-vm:applications.post"/>
-            <cm:property name="user.authentication.in" value="mock:user.authentication.in"/>
-            <cm:property name="user.identication.in" value="mock:user.identication.in"/>
+            <cm:property name="application.put.in" value="direct-vm:application.putById"/>
+            <cm:property name="application.post.in" value="direct-vm:application.postApplications"/>
             <cm:property name="log.trace.level" value="INFO"/>
         </cm:default-properties>
     </cm:property-placeholder>
     <service id="test" ref="rest.endpoint" auto-export="interfaces"/>
     <!-- context camel -->
-	<camel:camelContext id="cxf.example" trace="true" autoStartup="true" useBlueprintPropertyResolver="true">
-		<camel:routeContextRef ref="common-tenant"/>
-		<camel:routeContextRef ref="common-authentication"/>
+	<camel:camelContext id="camel.cxfrs.example" trace="true" autoStartup="true" useBlueprintPropertyResolver="true">
 		<camel:routeContextRef ref="cxf-put"/>
 		<camel:routeContextRef ref="cxf-post"/>
 		<camel:route id="application.exposition.rest">
@@ -48,7 +44,7 @@
 					</camel:when>
 				</camel:choice>
 				<camel:recipientList>
-					<camel:simple>direct-vm:${header.operationName.replaceAll('_','.')}</camel:simple>
+					<camel:simple>direct-vm:application.${header.operationName}</camel:simple>
 				</camel:recipientList>
 				<camel:doFinally>
 					<camel:process ref="httpResponse"/>

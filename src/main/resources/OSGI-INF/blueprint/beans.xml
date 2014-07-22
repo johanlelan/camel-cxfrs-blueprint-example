@@ -15,4 +15,14 @@
 	<bean id="httpResponse" class="org.apache.camel.examples.cxfrs.processors.HttpResponseGenerator"/>
 	<camelcxf:rsServer id="rest.endpoint" address="/test"
 		serviceClass="org.apache.camel.examples.cxfrs.codegen.service.TenantResource"/>
+<!-- 	<camelcxf:rsServer id="rest.endpoint" address="/test" -->
+<!--         serviceClass="org.apache.camel.examples.cxfrs.codegen.service.TenantResource"> -->
+<!-- 	    <camelcxf:providers> -->
+<!-- 	        <bean id="jsonProvider" class="org.codehaus.jackson.jaxrs.JacksonJaxbJsonProvider"/>       -->
+<!--             <bean id="jaxbProvider" class="org.apache.cxf.jaxrs.provider.JAXBElementProvider"/> -->
+<!-- 	    </camelcxf:providers> -->
+<!-- 	    <camelcxf:schemaLocations> -->
+<!-- 	       <camelcxf:schemaLocation>classpath:/service/application/application.xsd</camelcxf:schemaLocation> -->
+<!-- 	    </camelcxf:schemaLocations> -->
+<!--     </camelcxf:rsServer> -->
 </blueprint>

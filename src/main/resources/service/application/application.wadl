@@ -9,7 +9,7 @@
   <resource path="{tenant}">
    <param name="tenant" style="template" type="xs:string"/>
    <resource path="/applications">
-    <method name="OPTIONS" id="applications_options">
+    <method name="OPTIONS" id="options">
      <request>
       <param name="Authorization" style="header" type="xs:string"/>
      </request>
@@ -19,7 +19,7 @@
       </representation>
      </response>
     </method>
-    <method name="GET" id="applications_find">
+    <method name="GET" id="find">
      <request>
       <param name="Authorization" style="header" type="xs:string"/>
       <param name="inlinecount" style="query" type="xs:string" default="none">
@@ -85,7 +85,7 @@
       <doc title="Not Implemented" xml:lang="EN">When this functionnality is not implemented</doc>
      </response>
     </method>
-    <method name="POST" id="applications_post">
+    <method name="POST" id="post">
      <request>
       <representation mediaType="application/json">
        <doc xml:lang="EN">Should take a t:application json object without identifier</doc>
@@ -118,7 +118,7 @@
     </method>
     <resource path="{id}">
      <param name="id" style="template" type="xs:string"/>
-     <method name="OPTIONS" id="application_options">
+     <method name="OPTIONS" id="optionsById">
       <request>
        <param name="Authorization" style="header" type="xs:string"/>
       </request>
@@ -128,7 +128,7 @@
        </representation>
       </response>
      </method>
-     <method name="HEAD" id="application_head">
+     <method name="HEAD" id="headById">
       <request>
        <param name="Authorization" style="header" type="xs:string" required="true">
         <doc xml:lang="EN">Must specified Authorization header (RFC 2616)</doc>
@@ -151,7 +151,7 @@
        <doc title="Not Implemented" xml:lang="EN">When this functionnality is not implemented</doc>
       </response>
      </method>
-     <method name="PUT" id="application_put">
+     <method name="PUT" id="putById">
       <request>
        <representation mediaType="application/json">
         <doc xml:lang="EN">Should take a t:application json object with id field</doc>
@@ -188,7 +188,7 @@
        </representation>
       </response>
      </method>
-     <method name="GET" id="application_get">
+     <method name="GET" id="getById">
       <request>
        <param name="Authorization" style="header" type="xs:string" required="true">
         <doc xml:lang="EN">Must specified Authorization header (RFC 2616)</doc>
@@ -211,7 +211,7 @@
        <doc title="Not Implemented" xml:lang="EN">When this functionnality is not implemented</doc>
       </response>
      </method>
-     <method name="DELETE" id="application_delete">
+     <method name="DELETE" id="deleteById">
       <request>
        <param name="Authorization" style="header" type="xs:string" required="true">
         <doc xml:lang="EN">Must specified Authorization header (RFC 2616)</doc>

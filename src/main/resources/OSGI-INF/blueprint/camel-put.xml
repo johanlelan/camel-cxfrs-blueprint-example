@@ -20,10 +20,6 @@
 				<camel:simple>${header.id}</camel:simple>
 			</camel:setHeader>
 			<camel:removeHeader headerName="id"/>
-			<!-- should return 200 or 204 if entity-body is empty -->
-			<!-- <camel:setHeader headerName="CamelHttpResponseCode"> -->
-			<!-- <camel:constant>200</camel:constant> -->
-			<!-- </camel:setHeader> -->
 			<camel:setHeader headerName="CamelHttpResponseCode">
 				<camel:constant>204</camel:constant>
 			</camel:setHeader>
