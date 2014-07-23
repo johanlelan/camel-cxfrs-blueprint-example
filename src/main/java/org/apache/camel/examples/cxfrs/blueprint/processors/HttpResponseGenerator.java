@@ -1,4 +1,4 @@
-package org.apache.camel.examples.cxfrs.processors;
+package org.apache.camel.examples.cxfrs.blueprint.processors;
 
 import java.net.URI;
 import java.util.Date;

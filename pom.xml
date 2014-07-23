@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.apache.camel.examples</groupId>
-	<artifactId>cxfrs-blueprint</artifactId>
+	<artifactId>cxfrs.blueprint</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>bundle</packaging>
 	<name>CXFRS Example Blueprint Bundle</name>
@@ -17,6 +17,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<maven-bundle-plugin.version>2.4.0</maven-bundle-plugin.version>
+		<plugin-activator>osgi.Activator</plugin-activator>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -71,13 +72,17 @@
 			<artifactId>log4j</artifactId>
 			<version>${log4j.version}</version>
 		</dependency>
-		<!-- OSGI logService compendium -->
+		<!-- OSGI -->
 		<dependency>
 			<groupId>org.osgi</groupId>
 			<artifactId>org.osgi.compendium</artifactId>
 			<version>5.0.0</version>
-			<scope>test</scope>
 		</dependency>
+		<dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.core</artifactId>
+            <version>5.0.0</version>
+        </dependency>
 		<!-- testing -->
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
@@ -94,6 +99,7 @@
 	</dependencies>
 	<build>
 		<defaultGoal>install</defaultGoal>
+		<finalName>${project.groupId}.${project.artifactId}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -126,7 +132,7 @@
 							<wadlOptions>
 								<wadlOption>
 									<wadl>${basedir}/src/main/resources/service/application/application.wadl</wadl>
-									<packagename>org.apache.camel.examples.cxfrs.codegen.service</packagename>
+									<packagename>${project.groupId}.${project.artifactId}</packagename>
 									<extraargs>
 										<extraarg>-impl</extraarg>
 										<extraarg>-verbose</extraarg>
@@ -147,9 +153,8 @@
 				<extensions>true</extensions>
 				<configuration>
 					<instructions>
-						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-						<Private-Package>org.apache.camel.examples.*</Private-Package>
-						<!-- <Export-Package>org.apache.camel.examples.*;version=${project.version}</Export-Package> -->
+						<Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
+						<Export-Package>org.apache.camel.examples.*;version=${project.version}</Export-Package>
 						<Import-Package>*</Import-Package>
 					</instructions>
 				</configuration>

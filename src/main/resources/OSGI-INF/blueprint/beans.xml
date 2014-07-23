@@ -12,9 +12,9 @@
              http://cxf.apache.org/blueprint/jaxws http://cxf.apache.org/schemas/blueprint/jaxws.xsd
              http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd
              http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd">
-	<bean id="httpResponse" class="org.apache.camel.examples.cxfrs.processors.HttpResponseGenerator"/>
+	<bean id="httpResponse" class="org.apache.camel.examples.cxfrs.blueprint.processors.HttpResponseGenerator"/>
 	<camelcxf:rsServer id="rest.endpoint" address="/test"
-		serviceClass="org.apache.camel.examples.cxfrs.codegen.service.TenantResource"/>
+		serviceClass="org.apache.camel.examples.cxfrs.blueprint.TenantResource"/>
 <!-- 	<camelcxf:rsServer id="rest.endpoint" address="/test" -->
 <!--         serviceClass="org.apache.camel.examples.cxfrs.codegen.service.TenantResource"> -->
 <!-- 	    <camelcxf:providers> -->
